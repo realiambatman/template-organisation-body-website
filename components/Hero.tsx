@@ -71,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({ setCurrentPage }) => {
         <div className="w-full lg:w-[55%] h-[60vh] lg:h-[85vh] relative flex items-end justify-end">
             <div className="relative w-full h-full overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1524178232363-1fb2b075b955?q=80&w=2070&auto=format&fit=crop" 
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop" 
                   alt="Students Gathering" 
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s] ease-in-out"
                 />
