@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ChatAssistant from './components/ChatAssistant';
-import { 
-  HistoryPage, 
-  ImpactPage, 
-  AnthemPage, 
-  PublicationsPage, 
-  BlogPage, 
-  NewsPage, 
+import {
+  HistoryPage,
+  ImpactPage,
+  AnthemPage,
+  PublicationsPage,
+  BlogPage,
+  NewsPage,
   GalleryPage,
   RegistrationPage,
   AboutUsPage
@@ -19,10 +19,16 @@ import {
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
+  // Every page change starts at the top of the new page.
+  const navigate = useCallback((page: string) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <Home setCurrentPage={setCurrentPage} />;
+        return <Home setCurrentPage={navigate} />;
       case 'about-us':
         return <AboutUsPage />;
       case 'history':
@@ -40,24 +46,31 @@ function App() {
       case 'news':
         return <NewsPage />;
       case 'gallery-photo':
+        return <GalleryPage kind="photo" />;
       case 'gallery-video':
-        return <GalleryPage />;
+        return <GalleryPage kind="video" />;
       case 'contact':
         return <Contact />;
       default:
-        return <Home setCurrentPage={setCurrentPage} />;
+        return <Home setCurrentPage={navigate} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-white text-brand-navy font-sans selection:bg-brand-pink selection:text-white flex flex-col">
-      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      
-      <main className="flex-1">
+    <div className="flex min-h-screen flex-col bg-paper text-ink">
+      <a
+        href="#main"
+        className="btn btn-ink sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200]"
+      >
+        Skip to content
+      </a>
+      <Navbar currentPage={currentPage} setCurrentPage={navigate} />
+
+      <main id="main" className="flex-1" key={currentPage}>
         {renderPage()}
       </main>
 
-      <Footer setCurrentPage={setCurrentPage} />
+      <Footer setCurrentPage={navigate} />
       <ChatAssistant />
     </div>
   );

@@ -1,115 +1,139 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrandMark } from './Navbar';
 
 interface FooterProps {
   setCurrentPage: (page: string) => void;
 }
 
-const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
-  const handleNav = (e: React.MouseEvent, page: string) => {
-    e.preventDefault();
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+// Preset palettes defined in index.css. The switcher is a preview aid for
+// the template; remove <PaletteSwitcher /> below once you have picked one.
+const palettes = [
+  { id: 'cobalt', label: 'Cobalt' },
+  { id: 'forest', label: 'Forest' },
+  { id: 'ember', label: 'Ember' },
+];
+
+const PaletteSwitcher: React.FC = () => {
+  const [active, setActive] = useState(() => document.documentElement.dataset.theme || 'cobalt');
+
+  const apply = (id: string) => {
+    document.documentElement.dataset.theme = id;
+    setActive(id);
   };
 
   return (
-    <footer className="bg-brand-navy text-white relative overflow-hidden">
-        {/* Background Typography - The Motto */}
-        <div className="absolute inset-0 pointer-events-none flex items-end justify-center opacity-[0.03] select-none">
-            <span className="text-[12vw] leading-none font-serif font-black whitespace-nowrap text-white transform translate-y-[20%]">
-                INNOVATE CONNECT GROW
-            </span>
+    <div role="group" aria-label="Preview palette" className="flex items-center gap-3">
+      <span>Palette</span>
+      <div className="flex items-center gap-1">
+        {palettes.map((palette) => (
+          <button
+            key={palette.id}
+            type="button"
+            data-theme={palette.id}
+            aria-pressed={active === palette.id}
+            onClick={() => apply(palette.id)}
+            className={`flex min-h-[36px] items-center gap-2 rounded-full border px-3 text-sm transition-colors hover:text-white ${
+              active === palette.id ? 'border-white/60 text-white' : 'border-transparent'
+            }`}
+          >
+            <span aria-hidden="true" className="h-3.5 w-3.5 rounded-full bg-brand ring-1 ring-white/40" />
+            {palette.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
+  const linkClass = 'flex min-h-[36px] items-center text-left text-white/70 transition-colors hover:text-white';
+
+  return (
+    <footer className="on-dark">
+      {/* Call to action */}
+      <div className="bg-brand text-brand-contrast">
+        <div className="container-page flex flex-col gap-8 py-14 md:flex-row md:items-center md:justify-between md:py-16">
+          <div>
+            <h2 className="title-section text-brand-contrast">Join the Movement</h2>
+            <p className="mt-3 text-lg opacity-90">Be part of the legacy. Shape the future of our community.</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button type="button" onClick={() => setCurrentPage('contact')} className="btn btn-light">
+              Become a Member
+            </button>
+            <button type="button" onClick={() => setCurrentPage('contact')} className="btn btn-ghost-light">
+              Donate
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-ink text-white">
+        <div className="container-page grid grid-cols-2 gap-x-8 gap-y-12 py-16 lg:grid-cols-12">
+          <div className="col-span-2 lg:col-span-5">
+            <button type="button" onClick={() => setCurrentPage('home')} aria-label="Sensix home" className="rounded-control">
+              <BrandMark onDark />
+            </button>
+            <p className="mt-5 max-w-sm text-white/70">
+              Established in 2010, Sensix is the premier community dedicated to the educational, social, and technological upliftment of the global community.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-1">
+              {['Facebook', 'Twitter', 'Instagram', 'YouTube'].map((social) => (
+                <li key={social}>
+                  <a href="#" className={`${linkClass} underline decoration-white/30 underline-offset-4`}>
+                    {social}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <nav aria-label="The legacy" className="lg:col-span-2">
+            <h3 className="mb-3 font-sans text-sm font-semibold text-white">The Legacy</h3>
+            <ul>
+              <li><button type="button" onClick={() => setCurrentPage('history')} className={linkClass}>Our History</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('registration')} className={linkClass}>Constitution & Reg.</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('anthem')} className={linkClass}>Brand Anthem</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('about-us')} className={linkClass}>Vision & Mission</button></li>
+            </ul>
+          </nav>
+
+          <nav aria-label="The body" className="lg:col-span-2">
+            <h3 className="mb-3 font-sans text-sm font-semibold text-white">The Body</h3>
+            <ul>
+              <li><button type="button" onClick={() => setCurrentPage('impact')} className={linkClass}>Executive Committee</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('impact')} className={linkClass}>Regional Hubs</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('impact')} className={linkClass}>Chapters & Units</button></li>
+              <li><button type="button" onClick={() => setCurrentPage('publications')} className={linkClass}>Publications</button></li>
+            </ul>
+          </nav>
+
+          <div className="col-span-2 lg:col-span-3">
+            <h3 className="mb-3 font-sans text-sm font-semibold text-white">Reach Us</h3>
+            <address className="space-y-3 not-italic text-white/70">
+              <p>Sensix Tower,<br />Innovation District,<br />New York, NY 10001</p>
+              <p>
+                <button type="button" onClick={() => setCurrentPage('contact')} className="text-white underline decoration-white/30 underline-offset-4 hover:decoration-white">
+                  info@sensix.org
+                </button>
+              </p>
+              <p className="text-white">+1 555 123 4567</p>
+            </address>
+          </div>
         </div>
 
-        {/* Top Section: CTA */}
-        <div className="relative z-10 border-b border-white/10">
-            <div className="w-full px-4 md:px-8 py-16 flex flex-col md:flex-row items-center justify-between gap-8">
-                <div>
-                    <h3 className="text-3xl md:text-4xl font-serif font-medium mb-2">Join the Movement</h3>
-                    <p className="text-slate-400 font-light text-sm">Be part of the legacy. Shape the future of our community.</p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                    <button onClick={(e) => handleNav(e, 'contact')} className="px-10 py-4 bg-white text-brand-navy font-bold uppercase tracking-widest text-xs hover:bg-slate-200 transition-colors text-center rounded-sm">
-                        Become a Member
-                    </button>
-                    <button onClick={(e) => handleNav(e, 'contact')} className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-colors text-center rounded-sm">
-                        Donate
-                    </button>
-                </div>
+        <div className="border-t border-white/15">
+          <div className="container-page flex flex-col gap-4 pb-24 pt-6 text-sm text-white/70 lg:flex-row lg:items-center lg:justify-between">
+            <p>&copy; {new Date().getFullYear()} Sensix Global Inc.</p>
+            <PaletteSwitcher />
+            <div className="flex gap-6">
+              <button type="button" onClick={() => setCurrentPage('home')} className="hover:text-white">Privacy</button>
+              <button type="button" onClick={() => setCurrentPage('home')} className="hover:text-white">Terms</button>
+              <button type="button" onClick={() => setCurrentPage('home')} className="hover:text-white">Sitemap</button>
             </div>
+          </div>
         </div>
-
-        {/* Middle Section: Links Grid */}
-        <div className="relative z-10 w-full px-4 md:px-8 py-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24">
-                
-                {/* Brand Column */}
-                <div className="space-y-8">
-                    <div className="flex items-center gap-3 cursor-pointer" onClick={(e) => handleNav(e, 'home')}>
-                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                            <span className="font-serif text-brand-navy font-black text-2xl">S</span>
-                        </div>
-                        <span className="text-xl font-serif tracking-wide font-bold">SENSIX</span>
-                    </div>
-                    <p className="text-slate-400 text-sm font-light leading-relaxed">
-                        Established in 2010, Sensix is the premier community dedicated to the educational, social, and technological upliftment of the global community.
-                    </p>
-                    <div className="flex gap-4 pt-4">
-                        {['Facebook', 'Twitter', 'Instagram', 'YouTube'].map((social) => (
-                            <a key={social} href="#" className="w-10 h-10 flex items-center justify-center rounded-full border border-white/10 text-slate-400 hover:text-white hover:border-white hover:bg-white/10 transition-all">
-                                <span className="sr-only">{social}</span>
-                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                                </svg>
-                            </a>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Links 1 */}
-                <div className="space-y-8">
-                    <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-blue">The Legacy</h4>
-                    <ul className="space-y-4 text-sm text-slate-400">
-                        <li><button onClick={(e) => handleNav(e, 'history')} className="hover:text-white transition-colors block py-1">Our History</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'registration')} className="hover:text-white transition-colors block py-1">Constitution & Reg.</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'anthem')} className="hover:text-white transition-colors block py-1">Brand Anthem</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'about-us')} className="hover:text-white transition-colors block py-1">Vision & Mission</button></li>
-                    </ul>
-                </div>
-
-                {/* Links 2 */}
-                <div className="space-y-8">
-                    <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-green">The Body</h4>
-                    <ul className="space-y-4 text-sm text-slate-400">
-                        <li><button onClick={(e) => handleNav(e, 'impact')} className="hover:text-white transition-colors block py-1">Executive Committee</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'impact')} className="hover:text-white transition-colors block py-1">Regional Hubs</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'impact')} className="hover:text-white transition-colors block py-1">Chapters & Units</button></li>
-                        <li><button onClick={(e) => handleNav(e, 'publications')} className="hover:text-white transition-colors block py-1">Publications</button></li>
-                    </ul>
-                </div>
-
-                {/* Contact Info */}
-                <div className="space-y-8">
-                    <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-brand-pink">Reach Us</h4>
-                    <address className="not-italic text-sm text-slate-400 space-y-4">
-                        <p className="leading-relaxed">Sensix Tower,<br/>Innovation District,<br/>New York, NY 10001</p>
-                        <p><button onClick={(e) => handleNav(e, 'contact')} className="hover:text-white transition-colors text-white">info@sensix.org</button></p>
-                        <p className="text-white">+1 555 123 4567</p>
-                    </address>
-                </div>
-            </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="relative z-10 bg-black/20 px-4 md:px-8 py-8 border-t border-white/5">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-wider text-slate-500">
-                <p>&copy; {new Date().getFullYear()} Sensix Global Inc.</p>
-                <div className="flex gap-8">
-                    <button onClick={(e) => handleNav(e, 'home')} className="hover:text-white transition-colors">Privacy</button>
-                    <button onClick={(e) => handleNav(e, 'home')} className="hover:text-white transition-colors">Terms</button>
-                    <button onClick={(e) => handleNav(e, 'home')} className="hover:text-white transition-colors">Sitemap</button>
-                </div>
-            </div>
-        </div>
+      </div>
     </footer>
   );
 };
