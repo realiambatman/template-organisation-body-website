@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
-import { IconChat, IconSend, IconX } from './Icons';
-
-// Shown as one-tap questions before the visitor has typed anything.
-const suggestions = ['Who leads Sensix?', 'When was Sensix founded?', 'What is the Sensix Academy?'];
+import { IconX } from './Icons';
 
 const ChatAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,47 +15,33 @@ const ChatAssistant: React.FC = () => {
     }
   ]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const launcherRef = useRef<HTMLButtonElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ block: 'end' });
-  }, [messages, isLoading, isOpen]);
+    scrollToBottom();
+  }, [messages, isOpen]);
 
   // Prevent background scrolling when chat is open on mobile
   useEffect(() => {
     if (window.innerWidth < 768 && isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = 'unset';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    inputRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen]);
-
-  const close = () => {
-    setIsOpen(false);
-    // Return focus to the launcher once it is back on screen.
-    requestAnimationFrame(() => launcherRef.current?.focus());
-  };
-
-  const send = async (text: string) => {
-    const question = text.trim();
-    if (!question || isLoading) return;
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      text: question,
+      text: input,
       timestamp: Date.now()
     };
 
@@ -79,135 +62,89 @@ const ChatAssistant: React.FC = () => {
       setMessages(prev => [...prev, botMsg]);
     } catch (error) {
       console.error(error);
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: 'model',
-        text: 'The assistant could not be reached. Check your connection and send the question again.',
-        timestamp: Date.now()
-      }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    send(input);
-  };
-
-  const showSuggestions = messages.length === 1 && !isLoading;
-
   return (
     <>
-      {/* Launcher */}
-      {!isOpen && (
-        <button
-          ref={launcherRef}
-          type="button"
-          onClick={() => setIsOpen(true)}
-          aria-label="Open chat assistant"
-          className="fixed bottom-5 right-5 z-40 flex h-12 min-w-[48px] items-center justify-center gap-2.5 rounded-full bg-ink px-3.5 text-sm font-semibold text-paper shadow-float ring-1 ring-white/25 transition-colors hover:bg-brand hover:text-brand-contrast sm:pl-4 sm:pr-5 md:bottom-8 md:right-8"
-        >
-          <IconChat className="h-5 w-5" />
-          <span className="hidden sm:inline">Ask Sensix</span>
-        </button>
-      )}
+      {/* Text Pill Trigger */}
+      <button
+        onClick={() => setIsOpen(true)}
+        aria-label="Open chat assistant"
+        className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 bg-brand-blue text-white px-5 py-3 md:px-6 md:py-3 shadow-xl hover:bg-brand-navy transition-all duration-300 ${isOpen ? 'hidden' : 'flex'} items-center gap-3 rounded-full md:rounded-sm group`}
+      >
+        <span className="text-xs font-bold uppercase tracking-widest group-hover:tracking-[0.2em] transition-all">Assistant</span>
+        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+      </button>
 
-      {/* Chat window */}
+      {/* Chat Window */}
       {isOpen && (
-        <div
-          role="dialog"
-          aria-label="Sensix assistant"
-          className="fixed inset-0 z-[100] flex animate-pop flex-col overflow-hidden bg-paper md:inset-auto md:bottom-8 md:right-8 md:h-[min(620px,calc(100vh-4rem))] md:w-[400px] md:rounded-card md:border md:border-line md:shadow-float"
-        >
+        <div className="fixed inset-0 md:inset-auto md:bottom-8 md:right-8 w-full h-full md:w-[380px] md:h-[600px] bg-white md:border border-slate-200 shadow-2xl z-[100] flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300 md:rounded-lg overflow-hidden font-sans">
+          
           {/* Header */}
-          <div className="flex shrink-0 items-center gap-3 border-b border-line px-4 py-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-control bg-brand text-brand-contrast">
-              <IconChat className="h-5 w-5" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h2 className="font-display text-base font-semibold leading-tight">Sensix Assistant</h2>
-              <p className="truncate text-xs text-ink-subtle">Answers questions about Sensix</p>
+          <div className="bg-brand-blue p-4 md:p-5 flex items-center justify-between shrink-0 shadow-md z-10">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <h3 className="text-sm font-bold text-white uppercase tracking-wider">Sensix AI</h3>
+              </div>
+              <p className="text-[10px] text-slate-300 mt-1">Powered by Gemini • Official Assistant</p>
             </div>
-            <button
-              type="button"
-              onClick={close}
-              className="flex h-10 w-10 items-center justify-center rounded-control text-ink-muted transition-colors hover:bg-surface hover:text-ink"
-              aria-label="Close chat"
+            <button 
+              onClick={() => setIsOpen(false)}
+              className="text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors"
+              aria-label="Close Chat"
             >
-              <IconX className="h-5 w-5" />
+              <IconX className="w-5 h-5" />
             </button>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 space-y-3 overflow-y-auto bg-surface px-4 py-5" aria-live="polite">
+          <div className="flex-1 overflow-y-auto p-4 md:p-5 space-y-6 bg-slate-50 scroll-smooth">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div
-                  className={`max-w-[85%] whitespace-pre-wrap break-words px-4 py-2.5 text-[0.9375rem] leading-relaxed ${
-                    msg.role === 'user'
-                      ? 'rounded-[18px] rounded-br-[4px] bg-brand text-brand-contrast'
-                      : 'rounded-[18px] rounded-bl-[4px] border border-line bg-paper text-ink'
-                  }`}
-                >
+                <div className={`max-w-[85%] p-4 text-sm leading-relaxed shadow-sm rounded-lg ${
+                  msg.role === 'user' 
+                    ? 'bg-white border border-slate-200 text-brand-navy rounded-br-none' 
+                    : 'bg-brand-blue text-white rounded-bl-none'
+                }`}>
                   {msg.text}
                 </div>
               </div>
             ))}
-
             {isLoading && (
-              <div className="flex justify-start" role="status" aria-label="Assistant is typing">
-                <div className="flex gap-1.5 rounded-[18px] rounded-bl-[4px] border border-line bg-paper px-4 py-4">
-                  {[0, 1, 2].map((dot) => (
-                    <span
-                      key={dot}
-                      className="h-1.5 w-1.5 animate-blink rounded-full bg-ink-muted"
-                      style={{ animationDelay: `${dot * 160}ms` }}
-                    />
-                  ))}
+              <div className="flex justify-start">
+                <div className="bg-brand-blue px-4 py-3 rounded-lg rounded-bl-none">
+                  <div className="flex space-x-1.5">
+                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-1.5 h-1.5 bg-white/80 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
                 </div>
-              </div>
-            )}
-
-            {showSuggestions && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    onClick={() => send(suggestion)}
-                    className="min-h-[36px] rounded-full border border-brand/40 bg-paper px-3.5 text-sm font-medium text-brand transition-colors hover:border-brand hover:bg-brand-soft"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSend} className="shrink-0 border-t border-line bg-paper p-3">
-            <div className="flex items-center gap-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask a question..."
-                aria-label="Your question"
-                className="field flex-1"
-              />
-              <button
-                type="submit"
-                disabled={isLoading || !input.trim()}
-                aria-label="Send"
-                className="btn btn-primary w-11 shrink-0 px-0"
-              >
-                <IconSend className="h-5 w-5" />
-              </button>
-            </div>
-            <p className="mt-2 text-center text-xs text-ink-subtle">Powered by Gemini. Replies may contain mistakes.</p>
+          <form onSubmit={handleSend} className="p-4 bg-white border-t border-slate-100 flex gap-4 shrink-0">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask a question..."
+              aria-label="Your question"
+              className="flex-1 bg-slate-50 text-brand-navy placeholder-slate-400 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-blue transition-all rounded-sm border-transparent"
+            />
+            <button 
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="bg-brand-blue text-white px-4 py-2 rounded-sm text-xs font-bold uppercase tracking-widest hover:bg-brand-navy disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Send
+            </button>
           </form>
         </div>
       )}

@@ -2,234 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ------------------------------------------------------------------
-   Design tokens
-   Colours are stored as space-separated RGB channels so Tailwind can
-   apply opacity to them (bg-brand/10, border-ink/20 and so on).
-   ------------------------------------------------------------------ */
-/* Brand: change these four values to rebrand the whole site.
-   This default palette is also available as data-theme="cobalt". */
-:root,
-[data-theme='cobalt'] {
-  --brand: 27 77 228;            /* buttons, links, highlights, panels   */
-  --brand-strong: 18 56 178;     /* hover and pressed state of the above */
-  --brand-soft: 233 239 255;     /* tinted backgrounds and placeholders  */
-  --brand-contrast: 255 255 255; /* text and icons placed on --brand     */
+/* Custom scrollbar for the light theme */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
-:root {
-  /* Neutrals: the white and ink base. Usually left alone. */
-  --ink: 21 23 28;
-  --ink-muted: 78 85 99;
-  --ink-subtle: 98 105 118;
-  --line: 225 228 234;
-  --surface: 245 246 248;
-  --paper: 255 255 255;
-
-  /* Shape and type. */
-  --radius-control: 8px;
-  --radius-card: 14px;
-  --font-display: 'Bricolage Grotesque Variable', 'Helvetica Neue', Arial, sans-serif;
-  --font-text: 'Instrument Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
 }
 
-/* Ready-made palettes. Use one with <html data-theme="forest">. */
-[data-theme='forest'] {
-  --brand: 15 107 79;
-  --brand-strong: 10 80 59;
-  --brand-soft: 227 243 236;
-  --brand-contrast: 255 255 255;
-}
-
-[data-theme='ember'] {
-  --brand: 190 62 14;
-  --brand-strong: 150 47 9;
-  --brand-soft: 255 237 226;
-  --brand-contrast: 255 255 255;
-}
-
-@layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
-
-  body {
-    @apply bg-paper font-sans text-ink antialiased;
-    font-size: 1rem;
-    line-height: 1.6;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-display text-ink;
-    text-wrap: balance;
-  }
-
-  ::selection {
-    background: rgb(var(--brand));
-    color: rgb(var(--brand-contrast));
-  }
-
-  :focus-visible {
-    outline: 2px solid rgb(var(--brand));
-    outline-offset: 2px;
-  }
-
-  /* On brand or ink backgrounds the brand ring would disappear. */
-  .on-dark :focus-visible {
-    outline-color: #fff;
-  }
-}
-
-@layer components {
-  .container-page {
-    @apply mx-auto w-full max-w-[78rem] px-5 sm:px-8;
-  }
-
-  .section {
-    @apply py-16 md:py-24;
-  }
-
-  /* Type scale */
-  .title-page {
-    @apply font-display font-bold;
-    font-size: clamp(2.5rem, 6vw, 4.25rem);
-    line-height: 1;
-    letter-spacing: -0.035em;
-  }
-
-  .title-section {
-    @apply font-display font-bold;
-    font-size: clamp(2rem, 4.2vw, 3.25rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-  }
-
-  .title-card {
-    @apply font-display text-xl font-semibold leading-snug;
-    letter-spacing: -0.015em;
-  }
-
-  .lead {
-    @apply max-w-[62ch] text-lg leading-relaxed text-ink-muted;
-  }
-
-  .meta {
-    @apply text-sm text-ink-subtle;
-  }
-
-  /* Buttons */
-  .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-control px-5 py-2.5 text-sm font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-
-  .btn-primary {
-    @apply bg-brand text-brand-contrast hover:bg-brand-strong active:bg-brand-strong;
-  }
-
-  .btn-ink {
-    @apply bg-ink text-paper hover:bg-brand hover:text-brand-contrast;
-  }
-
-  .btn-outline {
-    @apply border border-ink/25 bg-paper text-ink hover:border-ink hover:bg-surface;
-  }
-
-  .btn-light {
-    @apply bg-paper text-ink hover:bg-surface;
-  }
-
-  .btn-ghost-light {
-    @apply border border-white/40 text-white hover:border-white hover:bg-white/10;
-  }
-
-  .link {
-    @apply inline-flex items-center gap-1.5 font-semibold text-brand underline decoration-brand/30 underline-offset-4 transition-colors hover:decoration-brand;
-  }
-
-  /* Surfaces */
-  .card {
-    @apply rounded-card border border-line bg-paper;
-  }
-
-  .chip {
-    @apply inline-flex items-center rounded-full border border-line bg-paper px-3 py-1 text-xs font-medium text-ink-muted;
-  }
-
-  /* Forms */
-  .label {
-    @apply mb-1.5 block text-sm font-medium text-ink;
-  }
-
-  .field {
-    @apply w-full rounded-control border border-ink/25 bg-paper px-3.5 py-2.5 text-ink transition-colors placeholder:text-ink-subtle hover:border-ink/50 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/25;
-  }
-
-  /* Tabs and filters */
-  .tab {
-    @apply min-h-[44px] whitespace-nowrap border-b-2 border-transparent px-1 pb-3 pt-2 text-sm font-semibold text-ink-subtle transition-colors hover:text-ink;
-  }
-
-  .tablist {
-    @apply flex gap-6 overflow-x-auto;
-    box-shadow: inset 0 -1px 0 rgb(var(--line));
-    scrollbar-width: none;
-  }
-
-  .tablist::-webkit-scrollbar {
-    display: none;
-  }
-
-  .tab[aria-selected='true'] {
-    @apply border-brand text-ink;
-  }
-
-  .pill {
-    @apply min-h-[36px] rounded-full border border-line bg-paper px-4 text-sm font-medium text-ink-muted transition-colors hover:border-ink hover:text-ink;
-  }
-
-  .pill[aria-pressed='true'] {
-    @apply border-ink bg-ink text-paper;
-  }
-
-  /* Empty states share one look everywhere. */
-  .empty {
-    @apply flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-ink/20 bg-surface px-6 py-16 text-center text-ink-muted;
-  }
-
-  /* Long-form text rendered from HTML strings (blog posts, notices). */
-  .article {
-    @apply max-w-[68ch] text-lg leading-relaxed text-ink-muted;
-  }
-
-  .article p {
-    @apply mb-6;
-  }
-
-  .article h3 {
-    @apply mb-3 mt-10 text-2xl font-semibold text-ink;
-  }
-
-  .article blockquote {
-    @apply my-10 border-l-4 border-brand pl-6 font-display text-2xl font-medium leading-snug text-ink;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -8,8 +8,7 @@ export interface NavItem {
 export interface Executive {
   name: string;
   role: string;
-  /** Optional photo path. Without it an initials placeholder is shown. */
-  image?: string;
+  image: string;
   quote?: string;
 }
 

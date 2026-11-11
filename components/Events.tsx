@@ -1,72 +1,67 @@
 import React from 'react';
-import { IconDownload } from './Icons';
-
-// Upcoming events. The hero panel on the home page reads the same list.
-export const events = [
-  {
-    day: '15',
-    month: 'August, 2024',
-    shortMonth: 'Aug',
-    title: 'Sensix Global Summit',
-    description: 'A strategic gathering of all chapters to discuss the roadmap, pass resolutions, and elect new leaders for the upcoming term.',
-    action: 'Register Now',
-  },
-  {
-    day: '05',
-    month: 'September, 2024',
-    shortMonth: 'Sep',
-    title: "Innovators' Gala",
-    description: 'Honoring the mentors who shape our future with a formal gala and awards ceremony for distinguished educators and tech leaders.',
-    action: 'View Details',
-  },
-  {
-    day: '10',
-    month: 'October, 2024',
-    shortMonth: 'Oct',
-    title: 'Global Tech Fair',
-    description: 'A celebration of our innovations with project showcases, hackathons, and a tech symposium. Bring your best ideas.',
-    action: 'View Details',
-  },
-];
 
 const Events: React.FC = () => {
   return (
-    <section id="events" className="section scroll-mt-16">
-      <div className="container-page">
-        <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="title-section">Upcoming Agenda</h2>
-            <p className="lead mt-4">Key dates for summits, hackathons, and global meetups.</p>
-          </div>
-          <button type="button" className="link shrink-0 self-start md:self-auto">
-            <IconDownload className="h-4 w-4" />
-            Download Annual Calendar PDF
-          </button>
-        </div>
+    <section id="events" className="py-24 bg-slate-50 min-h-screen">
+        <div className="w-full px-4 md:px-8 pt-12">
+            <div className="flex flex-col md:flex-row justify-between md:items-end mb-20">
+                <div className="max-w-2xl">
+                    <span className="text-brand-pink text-xs font-bold tracking-[0.2em] uppercase block mb-4">Calendar</span>
+                    <h2 className="text-5xl md:text-6xl font-serif text-brand-navy leading-none mb-6">Upcoming<br/>Agenda</h2>
+                    <p className="text-slate-500 font-light text-lg">Key dates for summits, hackathons, and global meetups.</p>
+                </div>
+                <div className="mt-8 md:mt-0">
+                    <button className="text-xs font-bold uppercase tracking-widest border-b border-brand-navy pb-1 text-brand-navy hover:text-brand-blue hover:border-brand-blue transition-colors">Download Annual Calendar PDF</button>
+                </div>
+            </div>
+            
+            <div className="border-t border-slate-200">
+                {/* Event 1 */}
+                <div className="group bg-white py-12 px-4 md:px-8 border-b border-slate-200 transition-all duration-300 hover:bg-slate-50 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        <div className="md:col-span-2 flex flex-col">
+                            <span className="text-6xl font-serif font-medium text-slate-300 group-hover:text-brand-blue transition-colors">15</span>
+                            <span className="text-xs uppercase font-bold tracking-widest text-slate-400">August, 2024</span>
+                        </div>
+                        <div className="md:col-span-7">
+                            <h3 className="text-3xl font-serif font-bold text-brand-navy mb-3 group-hover:text-brand-blue transition-colors">Sensix Global Summit</h3>
+                            <p className="text-brand-slate text-sm max-w-3xl">A strategic gathering of all chapters to discuss the roadmap, pass resolutions, and elect new leaders for the upcoming term.</p>
+                        </div>
+                        <div className="md:col-span-3 flex md:justify-end">
+                            <button className="px-8 py-3 bg-white border border-slate-200 text-xs font-bold uppercase tracking-widest text-brand-navy group-hover:bg-brand-blue group-hover:text-white group-hover:border-brand-blue transition-all">Register Now</button>
+                        </div>
+                </div>
 
-        <ol className="border-t-2 border-ink">
-          {events.map((event) => (
-            <li
-              key={event.title}
-              className="grid grid-cols-[4.5rem_1fr] gap-x-5 gap-y-4 border-b border-line py-8 md:grid-cols-[9rem_1fr_auto] md:items-center md:gap-x-10 md:py-10"
-            >
-              <div>
-                <span className="block font-display text-5xl font-bold leading-none tracking-tighter text-brand md:text-6xl">
-                  {event.day}
-                </span>
-                <span className="meta mt-1 block">{event.month}</span>
-              </div>
-              <div>
-                <h3 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">{event.title}</h3>
-                <p className="mt-2 max-w-[60ch] text-ink-muted">{event.description}</p>
-              </div>
-              <div className="col-start-2 md:col-start-3">
-                <button type="button" className="btn btn-outline">{event.action}</button>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
+                {/* Event 2 */}
+                <div className="group bg-white py-12 px-4 md:px-8 border-b border-slate-200 transition-all duration-300 hover:bg-slate-50 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        <div className="md:col-span-2 flex flex-col">
+                            <span className="text-6xl font-serif font-medium text-slate-300 group-hover:text-brand-green transition-colors">05</span>
+                            <span className="text-xs uppercase font-bold tracking-widest text-slate-400">September, 2024</span>
+                        </div>
+                        <div className="md:col-span-7">
+                            <h3 className="text-3xl font-serif font-bold text-brand-navy mb-3 group-hover:text-brand-green transition-colors">Innovators' Gala</h3>
+                            <p className="text-brand-slate text-sm max-w-3xl">Honoring the mentors who shape our future with a formal gala and awards ceremony for distinguished educators and tech leaders.</p>
+                        </div>
+                        <div className="md:col-span-3 flex md:justify-end">
+                            <button className="px-8 py-3 bg-white border border-slate-200 text-xs font-bold uppercase tracking-widest text-brand-navy group-hover:bg-brand-green group-hover:text-white group-hover:border-brand-green transition-all">View Details</button>
+                        </div>
+                </div>
+
+                {/* Event 3 */}
+                <div className="group bg-white py-12 px-4 md:px-8 border-b border-slate-200 transition-all duration-300 hover:bg-slate-50 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        <div className="md:col-span-2 flex flex-col">
+                            <span className="text-6xl font-serif font-medium text-slate-300 group-hover:text-brand-pink transition-colors">10</span>
+                            <span className="text-xs uppercase font-bold tracking-widest text-slate-400">October, 2024</span>
+                        </div>
+                        <div className="md:col-span-7">
+                            <h3 className="text-3xl font-serif font-bold text-brand-navy mb-3 group-hover:text-brand-pink transition-colors">Global Tech Fair</h3>
+                            <p className="text-brand-slate text-sm max-w-3xl">A celebration of our innovations with project showcases, hackathons, and a tech symposium. Bring your best ideas.</p>
+                        </div>
+                        <div className="md:col-span-3 flex md:justify-end">
+                            <button className="px-8 py-3 bg-white border border-slate-200 text-xs font-bold uppercase tracking-widest text-brand-navy group-hover:bg-brand-pink group-hover:text-white group-hover:border-brand-pink transition-all">View Details</button>
+                        </div>
+                </div>
+            </div>
+        </div>
     </section>
   );
 };
