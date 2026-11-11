@@ -72,7 +72,7 @@ const Hero: React.FC<HeroProps> = ({ setCurrentPage }) => {
             <div className="relative w-full h-full overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Students Gathering" 
+                  alt="Members of the community working together" 
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s] ease-in-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-slate-50 lg:w-1/4"></div>

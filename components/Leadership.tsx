@@ -22,7 +22,11 @@ const executives: Executive[] = [
   }
 ];
 
-const Leadership: React.FC = () => {
+interface LeadershipProps {
+  setCurrentPage: (page: string) => void;
+}
+
+const Leadership: React.FC<LeadershipProps> = ({ setCurrentPage }) => {
   return (
     <section id="leadership" className="py-24 bg-brand-light border-y border-slate-200">
       <div className="w-full px-4 md:px-8">
@@ -32,9 +36,14 @@ const Leadership: React.FC = () => {
             <h3 className="text-5xl font-serif text-brand-navy tracking-tight">Executive Committee</h3>
           </div>
           <div className="mt-8 md:mt-0">
-             <a href="#" className="inline-block px-8 py-3 border border-brand-navy text-xs font-bold uppercase tracking-widest text-brand-navy hover:bg-brand-navy hover:text-white transition-colors">
+             <button
+               type="button"
+               onClick={() => {
+                 setCurrentPage('about-us');
+                 window.scrollTo({ top: 0, behavior: 'smooth' });
+               }} className="inline-block px-8 py-3 border border-brand-navy text-xs font-bold uppercase tracking-widest text-brand-navy hover:bg-brand-navy hover:text-white transition-colors">
                See All Members
-             </a>
+             </button>
           </div>
         </div>
 

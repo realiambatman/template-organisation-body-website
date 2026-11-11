@@ -14,9 +14,9 @@ const Home: React.FC<HomeProps> = ({ setCurrentPage }) => {
     <>
       <Hero setCurrentPage={setCurrentPage} />
       <About />
-      <Leadership />
+      <Leadership setCurrentPage={setCurrentPage} />
       <Events />
-      <Join />
+      <Join setCurrentPage={setCurrentPage} />
     </>
   );
 };

@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Contact: React.FC = () => {
+  // The form is not connected to a backend. Replace this handler with a call
+  // to your own API or form service.
+  const [submitted, setSubmitted] = useState(false);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.currentTarget.reset();
+    setSubmitted(true);
+  };
+
   return (
     <section className="py-24 bg-white min-h-screen">
       <div className="w-full px-4 md:px-8 pt-12">
@@ -50,27 +59,27 @@ const Contact: React.FC = () => {
 
             {/* Form Side */}
             <div className="bg-slate-50 p-8 lg:p-16 border border-slate-200">
-                <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-8" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500">First Name</label>
-                            <input type="text" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
+                            <label htmlFor="contact-first-name" className="text-xs font-bold uppercase tracking-widest text-slate-500">First Name</label>
+                            <input id="contact-first-name" name="firstName" required type="text" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Last Name</label>
-                            <input type="text" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
+                            <label htmlFor="contact-last-name" className="text-xs font-bold uppercase tracking-widest text-slate-500">Last Name</label>
+                            <input id="contact-last-name" name="lastName" required type="text" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Email Address</label>
-                        <input type="email" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
+                        <label htmlFor="contact-email" className="text-xs font-bold uppercase tracking-widest text-slate-500">Email Address</label>
+                        <input id="contact-email" name="email" required type="email" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif" />
                     </div>
 
                     <div className="space-y-2">
-                         <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Subject</label>
+                         <label htmlFor="contact-subject" className="text-xs font-bold uppercase tracking-widest text-slate-500">Subject</label>
                          <div className="relative">
-                            <select className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif appearance-none">
+                            <select id="contact-subject" name="subject" className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif appearance-none">
                                 <option>General Inquiry</option>
                                 <option>Membership</option>
                                 <option>Volunteering</option>
@@ -85,13 +94,18 @@ const Contact: React.FC = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
-                        <textarea rows={4} className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif"></textarea>
+                        <label htmlFor="contact-message" className="text-xs font-bold uppercase tracking-widest text-slate-500">Message</label>
+                        <textarea id="contact-message" name="message" required rows={4} className="w-full bg-white border border-slate-200 p-4 rounded-sm focus:outline-none focus:border-brand-blue transition-colors text-brand-navy font-serif"></textarea>
                     </div>
 
-                    <button className="w-full bg-brand-navy text-white font-bold uppercase tracking-widest py-4 hover:bg-brand-blue transition-colors text-xs">
+                    <button type="submit" className="w-full bg-brand-navy text-white font-bold uppercase tracking-widest py-4 hover:bg-brand-blue transition-colors text-xs">
                         Send Message
                     </button>
+                    {submitted && (
+                        <p role="status" className="text-sm text-brand-green">
+                            Thank you for your message.
+                        </p>
+                    )}
                 </form>
             </div>
 

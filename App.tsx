@@ -44,8 +44,6 @@ function App() {
         return <GalleryPage />;
       case 'contact':
         return <Contact />;
-      case 'join':
-        return <Home setCurrentPage={setCurrentPage} />;
       default:
         return <Home setCurrentPage={setCurrentPage} />;
     }

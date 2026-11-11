@@ -1,7 +1,11 @@
 import React from 'react';
 import { IconBook, IconGlobe, IconUsers } from './Icons';
 
-const Join: React.FC = () => {
+interface JoinProps {
+  setCurrentPage: (page: string) => void;
+}
+
+const Join: React.FC<JoinProps> = ({ setCurrentPage }) => {
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       {/* Abstract bg decoration */}
@@ -92,9 +96,14 @@ const Join: React.FC = () => {
 
         <div className="mt-16 text-center">
             <p className="text-slate-400 font-serif italic text-lg mb-8">Ready to make a difference?</p>
-            <a href="#contact" className="inline-block px-12 py-4 bg-brand-navy text-white font-bold uppercase tracking-widest text-xs hover:bg-brand-blue transition-colors rounded-sm shadow-xl">
+            <button
+              type="button"
+              onClick={() => {
+                setCurrentPage('contact');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }} className="inline-block px-12 py-4 bg-brand-navy text-white font-bold uppercase tracking-widest text-xs hover:bg-brand-blue transition-colors rounded-sm shadow-xl">
                 Get Involved Today
-            </a>
+            </button>
         </div>
       </div>
     </section>
