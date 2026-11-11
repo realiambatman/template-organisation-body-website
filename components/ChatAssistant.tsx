@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChatMessage } from '../types';
-import { sendMessageToAssistant } from '../services/geminiService';
 import { IconX } from './Icons';
 
 const ChatAssistant: React.FC = () => {
@@ -51,6 +50,8 @@ const ChatAssistant: React.FC = () => {
     setIsLoading(true);
 
     try {
+      // Loaded on demand so the Gemini SDK stays out of the initial bundle.
+      const { sendMessageToAssistant } = await import('../services/geminiService');
       const responseText = await sendMessageToAssistant(userMsg.text);
       const botMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -71,6 +72,7 @@ const ChatAssistant: React.FC = () => {
       {/* Text Pill Trigger */}
       <button
         onClick={() => setIsOpen(true)}
+        aria-label="Open chat assistant"
         className={`fixed bottom-5 right-5 md:bottom-8 md:right-8 z-40 bg-brand-blue text-white px-5 py-3 md:px-6 md:py-3 shadow-xl hover:bg-brand-navy transition-all duration-300 ${isOpen ? 'hidden' : 'flex'} items-center gap-3 rounded-full md:rounded-sm group`}
       >
         <span className="text-xs font-bold uppercase tracking-widest group-hover:tracking-[0.2em] transition-all">Assistant</span>
@@ -133,6 +135,7 @@ const ChatAssistant: React.FC = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask a question..."
+              aria-label="Your question"
               className="flex-1 bg-slate-50 text-brand-navy placeholder-slate-400 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-brand-blue transition-all rounded-sm border-transparent"
             />
             <button 

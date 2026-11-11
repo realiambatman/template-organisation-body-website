@@ -1,8 +1,18 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize the Gemini AI client
-// Note: In a real production app, ensure your key has appropriate restrictions.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+// The key is injected at build time from GEMINI_API_KEY (see vite.config.ts).
+// It is optional: without it the chat widget replies with an "offline" message.
+// Note: the key ends up in the client bundle, so restrict it in the provider
+// console or proxy requests through a backend before deploying publicly.
+const API_KEY = process.env.GEMINI_API_KEY || '';
+
+let ai: GoogleGenAI | null = null;
+const getClient = (): GoogleGenAI => {
+  if (!ai) {
+    ai = new GoogleGenAI({ apiKey: API_KEY });
+  }
+  return ai;
+};
 
 const SYSTEM_INSTRUCTION = `
 You are the "Sensix Assistant", the official AI representative for Sensix.
@@ -48,11 +58,11 @@ If the user asks "Who is the president?", answer: "The General President of Sens
 
 export const sendMessageToAssistant = async (message: string): Promise<string> => {
   try {
-    if (!process.env.API_KEY) {
+    if (!API_KEY) {
       return "I'm currently offline (API Key missing). Please contact the administration.";
     }
 
-    const response = await ai.models.generateContent({
+    const response = await getClient().models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
       config: {
