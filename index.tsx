@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import '@fontsource-variable/bricolage-grotesque/index.css';
+import '@fontsource-variable/instrument-sans/index.css';
+import '@fontsource-variable/instrument-sans/wght-italic.css';
 import './index.css';
 
 const rootElement = document.getElementById('root');

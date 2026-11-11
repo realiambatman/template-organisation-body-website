@@ -1,16 +1,17 @@
 import React from 'react';
 
-// Common style for the new "Architectural" icon set
-// Features: Square linecaps, stroke width 1.2, sharp joins
+// Shared base for the line icon set: 1.5 stroke, round caps and joins.
+// Icons inherit their colour from the surrounding text (currentColor).
 const IconBase = ({ children, className }: { children?: React.ReactNode; className?: string }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
-    strokeWidth="1.2" 
-    strokeLinecap="square" 
-    strokeLinejoin="miter" 
+    strokeWidth="1.5" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+    aria-hidden="true" 
     className={className}
   >
     {children}
@@ -147,5 +148,52 @@ export const IconLightBulb = ({ className }: { className?: string }) => (
     <path d="M9 18h6" />
     <path d="M10 22h4" />
     <path d="M15.09 14c.18-.9.18-2.5 0-3.33a6 6 0 0 0-6.18 0c-.18.83-.18 2.43 0 3.33C9.76 15.75 10 22 10 22h4s.24-6.25 1.09-8z" />
+  </IconBase>
+);
+
+export const IconArrowLeft = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 5 5 12 12 19" />
+  </IconBase>
+);
+
+export const IconCheck = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <polyline points="5 12.5 10 17.5 19 7" />
+  </IconBase>
+);
+
+export const IconSend = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <path d="M21 3 10.5 13.5" />
+    <path d="M21 3l-6.5 18-4-7.5L3 9.5 21 3z" />
+  </IconBase>
+);
+
+export const IconMail = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <rect x="3" y="5" width="18" height="14" rx="2" />
+    <polyline points="3.5 7 12 13 20.5 7" />
+  </IconBase>
+);
+
+export const IconPhone = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" />
+  </IconBase>
+);
+
+export const IconPlay = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <polygon points="7 4 20 12 7 20 7 4" />
+  </IconBase>
+);
+
+export const IconDownload = ({ className }: { className?: string }) => (
+  <IconBase className={className}>
+    <line x1="12" y1="4" x2="12" y2="15" />
+    <polyline points="7 10.5 12 15.5 17 10.5" />
+    <line x1="5" y1="20" x2="19" y2="20" />
   </IconBase>
 );
