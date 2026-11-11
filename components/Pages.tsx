@@ -654,7 +654,7 @@ export const PublicationsPage: React.FC = () => {
         description: `The flagship annual publication of Sensix. A comprehensive record of the year's events.`,
         editor: 'Magazine Department',
         toc: ['Presidential Address', 'General Secretary Report', 'Finance Report', 'Literary Section', 'Photo Gallery'],
-        cover: `https://images.unsplash.com/photo-${1550000000000 + i * 100}?q=80&w=800&auto=format&fit=crop`
+        cover: '/placeholders/cover.svg'
     }));
 
     // Detail View
@@ -781,7 +781,7 @@ export const PublicationsPage: React.FC = () => {
                     {magazines.map((mag) => (
                         <div key={mag.id} onClick={() => setSelectedPub(mag)} className="group cursor-pointer">
                             <div className="aspect-[3/4] bg-slate-100 mb-6 relative overflow-hidden transition-all duration-500 ease-out border border-slate-200 group-hover:border-brand-navy shadow-sm group-hover:shadow-xl">
-                                <img src={mag.cover} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
+                                <img src={mag.cover} alt="" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
                                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6 m-4 border border-white/50 bg-white/80 backdrop-blur-sm group-hover:opacity-0 transition-opacity duration-300">
                                     <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Sensix Annual</span>
                                     <span className="text-5xl font-serif font-bold text-brand-navy text-center leading-none">{mag.vol.replace('Vol. ', '')}</span>
@@ -942,7 +942,7 @@ export const BlogPage: React.FC = () => {
                         <div className="flex flex-wrap items-center gap-8">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden">
-                                    <img src={`https://ui-avatars.com/api/?name=${selectedPost.author}&background=1d4ed8&color=fff`} alt={selectedPost.author} className="w-full h-full object-cover"/>
+                                    <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(selectedPost.author)}&background=1d4ed8&color=fff`} alt={selectedPost.author} className="w-full h-full object-cover"/>
                                 </div>
                                 <div className="text-left">
                                     <p className="text-xs font-bold uppercase text-brand-navy">{selectedPost.author}</p>
@@ -960,7 +960,7 @@ export const BlogPage: React.FC = () => {
     
                 {/* Hero Image - Full Width */}
                 <div className="w-full h-[40vh] md:h-[60vh] overflow-hidden">
-                    <img src={selectedPost.image} className="w-full h-full object-cover" alt="Blog Hero" />
+                    <img src={selectedPost.image} className="w-full h-full object-cover" alt={selectedPost.title} />
                 </div>
     
                 {/* Content Body - Left Aligned but max-width for readability */}
@@ -1192,8 +1192,8 @@ export const GalleryPage: React.FC = () => (
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div key={i} className={`relative group overflow-hidden ${i % 3 === 0 ? 'md:col-span-2 md:row-span-2' : ''}`}>
                         <img 
-                            src={`https://images.unsplash.com/photo-${1520000000000 + i * 10}?q=80&w=1200&auto=format&fit=crop`} 
-                            alt="Gallery" 
+                            src="/placeholders/photo.svg" 
+                            alt={`Gallery photo ${i}`} 
                             className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 filter grayscale group-hover:grayscale-0" 
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
